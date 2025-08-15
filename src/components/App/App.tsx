@@ -15,11 +15,12 @@ export default function App() {
   const [query, setQuery] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-const [debouncedQuery] = useDebounce(query, 500);
+  const [debouncedQuery] = useDebounce(query, 500);
 
   const { data, isLoading, isError, error, isSuccess } = useQuery({
     queryKey: ["notes", debouncedQuery, currentPage],
-    queryFn: () => fetchNotes(currentPage, PER_PAGE, debouncedQuery || undefined),
+    queryFn: () =>
+      fetchNotes(currentPage, PER_PAGE, debouncedQuery || undefined),
     placeholderData: keepPreviousData,
   });
 
@@ -47,14 +48,12 @@ const [debouncedQuery] = useDebounce(query, 500);
 
       {isLoading && <p>Loading...</p>}
       {isError && <p>Error: {(error as Error).message}</p>}
-      {isSuccess && data.results.length > 0 && (
-        <NoteList notes={data.results} />
-      )}
-      {isSuccess && data.results.length === 0 && <p>No notes found</p>}
+      {isSuccess && data.notes.length > 0 && <NoteList notes={data.notes} />}
+      {isSuccess && data.notes.length === 0 && <p>No notes found</p>}
 
       {isModalOpen && (
         <Modal onClose={() => setIsModalOpen(false)}>
-          <NoteForm />
+          <NoteForm onClose={() => setIsModalOpen(false)} />
         </Modal>
       )}
     </div>

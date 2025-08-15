@@ -5,20 +5,19 @@ const BASE_URL = "https://notehub-public.goit.study/api";
 const myKey = import.meta.env.VITE_NOTEHUB_TOKEN;
 
 interface NotesHttpResponse {
-  results: Note[];
-  perPage: number;
-  page: number;
+  notes: Note[];
   totalPages: number;
 }
 
 export interface CreateNotePayload {
   title: string;
   content: string;
-} 
+  tag: string;
+}
 
 export const fetchNotes = async (
   page: number,
-  perPage:number,
+  perPage: number,
   search?: string
 ): Promise<NotesHttpResponse> => {
   const response = await axios.get<NotesHttpResponse>(`${BASE_URL}/notes`, {
